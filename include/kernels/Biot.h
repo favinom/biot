@@ -27,13 +27,17 @@ public:
 
   Biot(const InputParameters & parameters);
 
+  unsigned int getLocalIndex(unsigned int) const;
+  void initTensor(RealTensorValue & V, RealVectorValue const & grad, unsigned int row);
+
 protected:
   virtual Real computeQpResidual() override;
 
   virtual Real computeQpJacobian() override;
 
+  virtual Real computeQpOffDiagJacobian(unsigned int /*jvar*/) override;
+
   unsigned int _dim;
-  unsigned int _local_var;
   unsigned int _disp_x_var;
   unsigned int _disp_y_var;
   unsigned int _disp_z_var;
@@ -45,5 +49,13 @@ protected:
   MaterialProperty<Real>            const & _trE;
   MaterialProperty<Real>            const & _trEold;
   MaterialProperty<RealTensorValue> const & _sigma;
+
+  RealTensorValue _id;
+
+  unsigned int _local_i_var;
+  unsigned int _local_j_var;
+  Real _returnValue;
+  RealTensorValue _V;
+  RealTensorValue _H;
 
 };
